@@ -3,8 +3,7 @@ import { SolutionBlock } from '../../../abstract/SolutionBlock.js';
 export class FileUploaderRegular extends SolutionBlock {}
 
 FileUploaderRegular.template = /* HTML */ `
-  <lr-simple-btn></lr-simple-btn>
-
+  <lr-simple-btn> </lr-simple-btn>
   <lr-modal strokes block-body-scrolling>
     <lr-start-from>
       <lr-drop-area with-icon clickable></lr-drop-area>
@@ -16,9 +15,10 @@ FileUploaderRegular.template = /* HTML */ `
     <lr-camera-source></lr-camera-source>
     <lr-url-source></lr-url-source>
     <lr-external-source></lr-external-source>
+    <lr-mtn-accept-screen></lr-mtn-accept-screen>
     <lr-cloud-image-editor-activity></lr-cloud-image-editor-activity>
   </lr-modal>
-
   <lr-message-box></lr-message-box>
   <lr-progress-bar-common></lr-progress-bar-common>
+  <slot></slot>
 `;

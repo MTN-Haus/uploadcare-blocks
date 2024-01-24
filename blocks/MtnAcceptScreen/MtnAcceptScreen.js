@@ -1,16 +1,18 @@
 // @ts-check
 import { ActivityBlock } from '../../abstract/ActivityBlock.js';
+import { Block } from '../../abstract/Block.js';
 import { UploaderBlock } from '../../abstract/UploaderBlock.js';
 import { UiMessage } from '../MessageBox/MessageBox.js';
 import { EventType } from '../UploadCtxProvider/EventEmitter.js';
 import { debounce } from '../utils/debounce.js';
 
-export class UploadList extends UploaderBlock {
+export class MtnAcceptScreen extends UploaderBlock {
   // Context owner should have access to CSS l10n
   // TODO: We need to move away l10n from CSS
+
   couldBeCtxOwner = true;
   historyTracked = true;
-  activityType = ActivityBlock.activities.UPLOAD_LIST;
+  activityType = ActivityBlock.activities.MTN_ACCEPT_SCREEN;
 
   constructor() {
     super();
@@ -22,20 +24,12 @@ export class UploadList extends UploaderBlock {
       uploadBtnVisible: false,
       addMoreBtnVisible: false,
       addMoreBtnEnabled: false,
-
-      atcBtnEnabled: false,
-
       headerText: '',
-      errorText: '',
-      addMoreCount: 0,
-      addMoreCountVisible: false,
-      acceptMessage: window.UploadCareLocalSettings.accept_message,
+      previewURLs: [],
+
       hasFiles: false,
       onAdd: () => {
         this.initFlow(true);
-      },
-      onAtc: () => {
-        this.onAtcBtn();
       },
       onUpload: () => {
         this.uploadAll();
@@ -52,33 +46,26 @@ export class UploadList extends UploaderBlock {
         this.uploadCollection.clearAll();
       },
     };
+
+    // console.log('Accept Screen: ', this);
+    // console.log('Accept Screen this.$: ', this.$);
+    // console.log('Accept Screen this.uploadCollection: ', this.uploadCollection);
+    // console.log('Accept Screen this.uploadCollection.items(): ', this.uploadCollection.items());
   }
 
-  onAtcBtn() {
-    const variantId = window.UploadCareLocalSettings.variant_id;
-    const lineItemsJson = window.UploadCareLocalSettings.lineItemsJson;
+  ckeckFiles() {
+    // console.log('Accept Screen this.uploadCollection.items(): ', this.uploadCollection.items());
+    let itemIds = this.uploadCollection.items();
 
-    let lineItems = lineItemsJson;
+    let data = [];
+    for (let id of itemIds) {
+      let item = this.uploadCollection.read(id);
+      // console.log(item);
 
-    let fullData = {
-      items: [
-        {
-          quantity: 1,
-          id: variantId,
-          properties: lineItemsJson,
-        },
-      ],
-    };
+      data.push({ cdnURL: item.getValue('cdnUrl') });
+    }
 
-    fetch(window.Shopify.routes.root + 'cart/add.js', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(fullData),
-    }).then((data) => {
-      window.location.href = '//' + window.location.host + '/cart';
-    });
+    this.$.previewURLs = data;
   }
 
   _debouncedHandleCollectionUpdate = debounce(() => {
@@ -91,6 +78,8 @@ export class UploadList extends UploaderBlock {
     if (!this.couldOpenActivity && this.$['*currentActivity'] === this.activityType) {
       this.historyBack();
     }
+
+    this.ckeckFiles();
   }, 0);
 
   /**
@@ -136,17 +125,10 @@ export class UploadList extends UploaderBlock {
       msg.isError = true;
       this.set$({
         '*message': msg,
-        errorText: msg.text,
-        atcBtnEnabled: false,
-        addMoreCount: countValidationResult.min - filesCount,
-        addMoreCountVisible: countValidationResult.min - filesCount > 0 ? true : false,
       });
     } else {
       this.set$({
         '*message': null,
-        errorText: '',
-        atcBtnEnabled: this.$.doneBtnVisible && this.$.doneBtnEnabled ? true : false,
-        addMoreCountVisible: false,
       });
     }
   }
@@ -277,43 +259,48 @@ export class UploadList extends UploaderBlock {
   }
 }
 
-UploadList.template = /* HTML */ `
+MtnAcceptScreen.template = /* HTML */ `
   <lr-activity-header>
     <span class="header-text">{{headerText}}</span>
     <button type="button" class="mini-btn close-btn" set="onclick: *closeModal">
       <lr-icon name="close"></lr-icon>
     </button>
   </lr-activity-header>
-  <div class="no-files" set="@hidden: hasFiles">
-    <slot name="empty"><span l10n="no-files"></span></slot>
-  </div>
-  <div class="accept-block">
-    <div class="files" repeat="*uploadList" repeat-item-tag="lr-file-item"></div>
-    <div class="accept-block__form">
-      <div set="innerHTML: acceptMessage;" class="accept-block__message"></div>
-      <div class="accept-block__error" set="@hidden: !errorText">{{errorText}}</div>
-      <button set="onclick: onAtc; @disabled: !atcBtnEnabled" class="atc-button primary-btn">Add to cart</button>
 
-      <button
-        type="button"
-        class="add-more-btn secondary-btn"
-        set="onclick: onAdd; @disabled: !addMoreBtnEnabled; @hidden: !addMoreBtnVisible"
-      >
-        <lr-icon name="add"></lr-icon>
-        <span>Add <span set="@hidden: !addMoreCountVisible">{{addMoreCount}}</span> more</span>
-      </button>
+  <div class="accept-screen">
+    <div class="accept-screen__files">
+      <div class="no-files" set="@hidden: hasFiles">
+        <slot name="empty"><span l10n="no-files"></span></slot>
+      </div>
 
-      <button type="button" class="cancel-btn secondary-btn" set="onclick: onCancel;" l10n="clear"></button>
+      <div class="mtn-files" repeat="previewURLs" repeat-item-tag="lr-mtn-file-item"></div>
     </div>
+    <div class="accept-screen__form">Accept conditions?</div>
   </div>
+
   <div class="toolbar">
+    <button type="button" class="cancel-btn secondary-btn" set="onclick: onCancel;" l10n="clear"></button>
     <div class="toolbar-spacer"></div>
+    <button
+      type="button"
+      class="add-more-btn secondary-btn"
+      set="onclick: onAdd; @disabled: !addMoreBtnEnabled; @hidden: !addMoreBtnVisible"
+    >
+      <lr-icon name="add"></lr-icon><span l10n="add-more"></span>
+    </button>
     <button
       type="button"
       class="upload-btn primary-btn"
       set="@hidden: !uploadBtnVisible; onclick: onUpload;"
       l10n="upload"
     ></button>
+    <button
+      type="button"
+      class="done-btn primary-btn"
+      set="@hidden: !doneBtnVisible; onclick: onDone;  @disabled: !doneBtnEnabled"
+      l10n="done"
+    ></button>
   </div>
+
   <lr-drop-area ghost></lr-drop-area>
 `;
