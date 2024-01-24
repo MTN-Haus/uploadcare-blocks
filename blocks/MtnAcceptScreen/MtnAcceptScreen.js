@@ -1,4 +1,3 @@
-// @ts-check
 import { ActivityBlock } from '../../abstract/ActivityBlock.js';
 import { Block } from '../../abstract/Block.js';
 import { UploaderBlock } from '../../abstract/UploaderBlock.js';
@@ -137,7 +136,7 @@ export class MtnAcceptScreen extends UploaderBlock {
   _updateUploadsState() {
     let itemIds = this.uploadCollection.items();
     let filesCount = itemIds.length;
-    /** @type {Summary} */
+
     let summary = {
       total: filesCount,
       succeed: 0,

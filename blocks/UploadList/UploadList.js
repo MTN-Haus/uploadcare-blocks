@@ -1,4 +1,3 @@
-// @ts-check
 import { ActivityBlock } from '../../abstract/ActivityBlock.js';
 import { UploaderBlock } from '../../abstract/UploaderBlock.js';
 import { UiMessage } from '../MessageBox/MessageBox.js';
