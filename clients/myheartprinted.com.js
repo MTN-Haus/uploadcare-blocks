@@ -8,7 +8,7 @@
 // {% endcomment %}
 
 // import * as LR from '{{ "blocks.min.js" | asset_url }}';
-import * as LR from 'http://127.0.0.1:5500/vite/blocks/web/blocks.min.js';
+import * as LR from './../web/blocks.min.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const upload = new MTNUploadCare({
