@@ -194,6 +194,7 @@ ActivityBlock.activities = Object.freeze({
   UPLOAD_LIST: 'upload-list',
   URL: 'url',
   CONFIRMATION: 'confirmation',
+  MTN_ACCEPT_SCREEN: 'mtn-accept-screen',
   CLOUD_IMG_EDIT: 'cloud-image-edit',
   EXTERNAL: 'external',
   DETAILS: 'details',

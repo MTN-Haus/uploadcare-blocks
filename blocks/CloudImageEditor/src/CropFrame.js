@@ -152,11 +152,12 @@ export class CropFrame extends CloudImageEditorBase {
 
       if (isCenter) {
         const moveThumbRect = {
-          x: x + width / 3,
-          y: y + height / 3,
-          width: width / 3,
-          height: height / 3,
+          x: x,
+          y: y,
+          width: width,
+          height: height,
         };
+
         setSvgNodeAttrs(interactionNode, moveThumbRect);
       } else {
         const thumbSizeMultiplier = clamp(
@@ -221,11 +222,12 @@ export class CropFrame extends CloudImageEditorBase {
       for (let j = 0; j < 3; j++) {
         let direction = /** @type {import('./types.js').Direction} */ (`${['n', '', 's'][i]}${['w', '', 'e'][j]}`);
         let groupNode = createSvgNode('g');
-        groupNode.classList.add('thumb');
+
         groupNode.setAttribute('with-effects', '');
         let interactionNode = createSvgNode('rect', {
           fill: 'transparent',
         });
+
         let pathNode = createSvgNode('path', {
           stroke: 'currentColor',
           fill: 'none',

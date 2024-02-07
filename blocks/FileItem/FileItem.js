@@ -143,12 +143,17 @@ export class FileItem extends UploaderBlock {
     }
     let entry = this._entry;
 
+    console.log(
+      "🚀 ~ FileItem ~ _generateThumbnail ~ entry.getValue('cdnUrlModifiers'):",
+      entry.getValue('cdnUrlModifiers')
+    );
+
     if (entry.getValue('fileInfo') && entry.getValue('isImage')) {
       let size = this.cfg.thumbSize;
       let thumbUrl = this.proxyUrl(
         createCdnUrl(
           createOriginalUrl(this.cfg.cdnCname, this._entry.getValue('uuid')),
-          createCdnUrlModifiers(entry.getValue('cdnUrlModifiers'), `scale_crop/${size}x${size}/center`)
+          createCdnUrlModifiers(entry.getValue('cdnUrlModifiers'), '')
         )
       );
       let currentThumbUrl = entry.getValue('thumbUrl');
@@ -158,7 +163,6 @@ export class FileItem extends UploaderBlock {
       }
       return;
     }
-
     if (entry.getValue('thumbUrl')) {
       return;
     }
@@ -447,10 +451,6 @@ FileItem.template = /* HTML */ `
         <lr-icon set="@name: badgeIcon"></lr-icon>
       </div>
     </div>
-    <div class="file-name-wrapper">
-      <span class="file-name" set="@title: itemName">{{itemName}}</span>
-      <span class="file-error" set="@hidden: !errorText">{{errorText}}</span>
-    </div>
     <div class="file-actions">
       <button type="button" class="edit-btn mini-btn" set="onclick: onEdit; @hidden: !isEditable">
         <lr-icon name="edit-file"></lr-icon>
@@ -465,8 +465,13 @@ FileItem.template = /* HTML */ `
     <lr-progress-bar
       class="progress-bar"
       set="value: progressValue; visible: progressVisible; unknown: progressUnknown"
-    >
-    </lr-progress-bar>
+    ></lr-progress-bar>
+  </div>
+
+  <div class="file-actions-mobile">
+    <button type="button" class="edit-btn mini-btn" set="onclick: onEdit; @hidden: !isEditable">Edit</button>
+    <button type="button" class="remove-btn mini-btn" set="onclick: onRemove;">Remove</button>
+    <button type="button" class="upload-btn mini-btn" set="onclick: onUpload;">Upload</button>
   </div>
 `;
 FileItem.activeInstances = new Set();

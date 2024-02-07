@@ -14,6 +14,7 @@ export const OPERATIONS_ZEROS = Object.freeze({
   filter: 0,
   rotate: 0,
   mirror: false,
+  flip: false,
 });
 
 const SUPPORTED_OPERATIONS_ORDERED = /** @type {const} */ ([

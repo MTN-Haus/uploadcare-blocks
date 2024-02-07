@@ -1,4 +1,7 @@
 // @ts-check
+
+import { fromUrl } from '@uploadcare/upload-client';
+
 // Symbiote.js
 export { BaseComponent, Data } from '@symbiotejs/symbiote';
 
@@ -39,6 +42,8 @@ export { Select } from './blocks/Select/Select.js';
 export { Video } from './blocks/Video/Video.js';
 export { ShadowWrapper, shadowed } from './blocks/ShadowWrapper/ShadowWrapper.js';
 export { Copyright } from './blocks/Copyright/Copyright.js';
+export { MtnFileItem } from './blocks/MtnFileItem/MtnFileItem.js';
+export { MtnAcceptScreen } from './blocks/MtnAcceptScreen/MtnAcceptScreen.js';
 
 // Solutions:
 export { FileUploaderRegular } from './solutions/file-uploader/regular/FileUploaderRegular.js';
