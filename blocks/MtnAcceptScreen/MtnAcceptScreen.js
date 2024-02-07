@@ -182,33 +182,8 @@ export class MtnAcceptScreen extends UploaderBlock {
       addMoreBtnEnabled: summary.total === 0 || (!tooMany && !exact),
       addMoreBtnVisible: !exact || this.cfg.multiple,
 
-      headerText: this._getHeaderText(summary),
+      headerText: 'Product Preview',
     });
-  }
-
-  /**
-   * @private
-   * @param {Summary} summary
-   */
-  _getHeaderText(summary) {
-    /** @param {keyof Summary} status */
-    const localizedText = (status) => {
-      const count = summary[status];
-      return this.l10n(`header-${status}`, {
-        count: count,
-      });
-    };
-    if (summary.uploading > 0) {
-      return localizedText('uploading');
-    }
-    if (summary.failed > 0) {
-      return localizedText('failed');
-    }
-    if (summary.succeed > 0) {
-      return localizedText('succeed');
-    }
-
-    return localizedText('total');
   }
 
   get couldOpenActivity() {

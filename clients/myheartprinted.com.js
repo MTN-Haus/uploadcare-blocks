@@ -40,7 +40,7 @@ class MTNUploadCare {
       this.addUploader();
       this.productFormWatcher();
       this.onUpload();
-      this.messageWatcher();
+      // this.messageWatcher();
       this.initUploadCare();
     }
 
@@ -53,7 +53,7 @@ class MTNUploadCare {
       action: '',
       ctx_name: 'lr-wgt-common',
       multiple_min: 2,
-      multiple_max: 9,
+      multiple_max: 2,
       accent_color: '#ff0000', // HEX only
       crop_preset: '1:1', // '100:230' ('width:height') or ''
       atc_form_btns_selector: '', // selector
@@ -71,10 +71,9 @@ class MTNUploadCare {
       atc_btns_selectors: '', // will be disabled
       variant_id: 0,
       accept_message: `
-        <h3>Product preview</h3>
-        <p>Click pictures to resize or crop</p>
-        <p class="accept-message__icon accept-message__icon--1">9 images have been cropped to fit them into square magnets. Please review before placing your order</p>
+        <h3>Click pictures to resize or crop</h3>
         <p class="accept-message__icon accept-message__icon--2">Area beyond the dotted lines will wrap around the edges of your magnets</p>
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
       `,
       providers: 'local, instagram', // url, camera, dropbox, facebook, gdrive, gphotos, instagram
     };
@@ -102,6 +101,8 @@ class MTNUploadCare {
             cropPreset="${this.config.crop_preset}"
             thumbSize="${this.config.thumb_size}"
             removeCopyright="true"
+            debug="true"
+            confirmUpload="false"
             source-list="${this.config.providers}"
           ></lr-config>
 
@@ -128,8 +129,6 @@ class MTNUploadCare {
       const lineItemsBox = dataOutput.parentElement.querySelector('.uploadcare-line-items');
 
       dataOutput.addEventListener('lr-data-output', (e) => {
-        // document.querySelector('dialog').close();
-
         const group = e.detail?.data?.groupData;
         const files = e.detail?.data?.files;
 
@@ -173,21 +172,21 @@ class MTNUploadCare {
     });
   }
 
-  messageWatcher() {
-    this.btnsContainer = this.form.querySelector(this.config.atc_form_btns_selector);
-    if (this.btnsContainer) {
-      // this.btnsContainer.addEventListener('mouseover', () => {
-      //   if(!this.btnsContainer.querySelector('.mtn-uploadcare-message') && this.state.atcBtns == 'disabled') {
-      //     let message = document.createElement('div');
-      //     message.classList.add('mtn-uploadcare-message');
-      //     message.textContent = this.config.upload_images_messsage;
-      //     this.btnsContainer.append(message);
-      //   } else if( this.state.atcBtns == 'enabled') {
-      //     this.btnsContainer.querySelector('.mtn-uploadcare-message')?.remove();
-      //   }
-      // });
-    }
-  }
+  // messageWatcher() {
+  //   this.btnsContainer = this.form.querySelector(this.config.atc_form_btns_selector);
+  //   if (this.btnsContainer) {
+  //     this.btnsContainer.addEventListener('mouseover', () => {
+  //       if(!this.btnsContainer.querySelector('.mtn-uploadcare-message') && this.state.atcBtns == 'disabled') {
+  //         let message = document.createElement('div');
+  //         message.classList.add('mtn-uploadcare-message');
+  //         message.textContent = this.config.upload_images_messsage;
+  //         this.btnsContainer.append(message);
+  //       } else if( this.state.atcBtns == 'enabled') {
+  //         this.btnsContainer.querySelector('.mtn-uploadcare-message')?.remove();
+  //       }
+  //     });
+  //   }
+  // }
 
   toggleATCBtns(show, form) {
     if (this.config.hide_atc_form_btns) {

@@ -177,6 +177,7 @@ export class EditorImageCropper extends CloudImageEditorBase {
       } = cropTransformation;
       let { width: sourceWidth } = rotateSize(this._imageSize, rotate);
       let ratio = previewWidth / sourceWidth;
+
       cropBox = constraintRect(
         roundRect({
           x: previewX + x * ratio,
@@ -209,8 +210,8 @@ export class EditorImageCropper extends CloudImageEditorBase {
       cropBox = {
         x: imageBox.x + imageBox.width / 2 - width / 2,
         y: imageBox.y + imageBox.height / 2 - height / 2,
-        width,
-        height,
+        width: width,
+        height: height,
       };
     }
 

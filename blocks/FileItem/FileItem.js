@@ -143,6 +143,11 @@ export class FileItem extends UploaderBlock {
     }
     let entry = this._entry;
 
+    console.log(
+      "🚀 ~ FileItem ~ _generateThumbnail ~ entry.getValue('cdnUrlModifiers'):",
+      entry.getValue('cdnUrlModifiers')
+    );
+
     if (entry.getValue('fileInfo') && entry.getValue('isImage')) {
       let size = this.cfg.thumbSize;
       let thumbUrl = this.proxyUrl(
@@ -158,7 +163,6 @@ export class FileItem extends UploaderBlock {
       }
       return;
     }
-
     if (entry.getValue('thumbUrl')) {
       return;
     }

@@ -29,7 +29,7 @@ export class UploaderBlock extends ActivityBlock {
 
   /** @private */
   _validators = [
-    this._validateMultipleLimit.bind(this),
+    // this._validateMultipleLimit.bind(this),
     this._validateIsImage.bind(this),
     this._validateFileType.bind(this),
     this._validateMaxSizeLimit.bind(this),

@@ -24,12 +24,15 @@ export class UploadList extends UploaderBlock {
 
       atcBtnEnabled: false,
 
-      headerText: '',
+      headerText: 'Product Preview',
       errorText: '',
       addMoreCount: 0,
       addMoreCountVisible: false,
       acceptMessage: window.UploadCareLocalSettings.accept_message,
       hasFiles: false,
+
+      showCancelAlert: false,
+
       onAdd: () => {
         this.initFlow(true);
       },
@@ -44,11 +47,24 @@ export class UploadList extends UploaderBlock {
         this.doneFlow();
       },
       onCancel: () => {
+        this.set$({
+          showCancelAlert: false,
+        });
         let data = this.getOutputData((dataItem) => {
           return !!dataItem.getValue('fileInfo');
         });
         this.emit(EventType.REMOVE, data, { debounce: true });
         this.uploadCollection.clearAll();
+      },
+      onCancelAlert: () => {
+        this.set$({
+          showCancelAlert: true,
+        });
+      },
+      onCancelClear: () => {
+        this.set$({
+          showCancelAlert: false,
+        });
       },
     };
   }
@@ -126,6 +142,9 @@ export class UploadList extends UploaderBlock {
       let textKey = countValidationResult.tooFew
         ? 'files-count-limit-error-too-few'
         : 'files-count-limit-error-too-many';
+      if (countValidationResult.min === countValidationResult.max) {
+        textKey = 'files-count-limit-error-min-eq-max';
+      }
       msg.caption = this.l10n('files-count-limit-error-title');
       msg.text = this.l10n(textKey, {
         min: countValidationResult.min,
@@ -199,34 +218,7 @@ export class UploadList extends UploaderBlock {
 
       addMoreBtnEnabled: summary.total === 0 || (!tooMany && !exact),
       addMoreBtnVisible: !exact || this.cfg.multiple,
-
-      headerText: this._getHeaderText(summary),
     });
-  }
-
-  /**
-   * @private
-   * @param {Summary} summary
-   */
-  _getHeaderText(summary) {
-    /** @param {keyof Summary} status */
-    const localizedText = (status) => {
-      const count = summary[status];
-      return this.l10n(`header-${status}`, {
-        count: count,
-      });
-    };
-    if (summary.uploading > 0) {
-      return localizedText('uploading');
-    }
-    if (summary.failed > 0) {
-      return localizedText('failed');
-    }
-    if (summary.succeed > 0) {
-      return localizedText('succeed');
-    }
-
-    return localizedText('total');
   }
 
   get couldOpenActivity() {
@@ -287,12 +279,12 @@ UploadList.template = /* HTML */ `
     <slot name="empty"><span l10n="no-files"></span></slot>
   </div>
   <div class="accept-block">
-    <div class="files" repeat="*uploadList" repeat-item-tag="lr-file-item"></div>
-    <div class="accept-block__form">
+    <div class="accept-block__text">
       <div set="innerHTML: acceptMessage;" class="accept-block__message"></div>
       <div class="accept-block__error" set="@hidden: !errorText">{{errorText}}</div>
+    </div>
+    <div class="accept-block__btns">
       <button set="onclick: onAtc; @disabled: !atcBtnEnabled" class="atc-button primary-btn">Add to cart</button>
-
       <button
         type="button"
         class="add-more-btn secondary-btn"
@@ -302,8 +294,27 @@ UploadList.template = /* HTML */ `
         <span>Add <span set="@hidden: !addMoreCountVisible">{{addMoreCount}}</span> more</span>
       </button>
 
-      <button type="button" class="cancel-btn secondary-btn" set="onclick: onCancel;" l10n="clear"></button>
+      <button
+        type="button"
+        class="cancel-alert-btn secondary-btn"
+        set="onclick: onCancelAlert; @hidden: showCancelAlert"
+        l10n="clear"
+      ></button>
+      <p class="clear-alert" set="@hidden: !showCancelAlert">Are you sure you want to delete all uploaded pictures?</p>
+      <button
+        type="button"
+        class="cancel-btn secondary-btn"
+        set="onclick: onCancel; @hidden: !showCancelAlert"
+        l10n="clear"
+      ></button>
+      <button
+        type="button"
+        class="cancel-cancel-btn secondary-btn"
+        set="onclick: onCancelClear; @hidden: !showCancelAlert"
+        l10n="cancel"
+      ></button>
     </div>
+    <div class="files" repeat="*uploadList" repeat-item-tag="lr-file-item"></div>
   </div>
   <div class="toolbar">
     <div class="toolbar-spacer"></div>
