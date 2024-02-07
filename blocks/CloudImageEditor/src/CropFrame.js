@@ -227,7 +227,7 @@ export class CropFrame extends CloudImageEditorBase {
         let interactionNode = createSvgNode('rect', {
           fill: 'transparent',
         });
-        let gClass = '';
+
         let pathNode = createSvgNode('path', {
           stroke: 'currentColor',
           fill: 'none',

@@ -153,7 +153,7 @@ export class FileItem extends UploaderBlock {
       let thumbUrl = this.proxyUrl(
         createCdnUrl(
           createOriginalUrl(this.cfg.cdnCname, this._entry.getValue('uuid')),
-          createCdnUrlModifiers(entry.getValue('cdnUrlModifiers'))
+          createCdnUrlModifiers(entry.getValue('cdnUrlModifiers'), '')
         )
       );
       let currentThumbUrl = entry.getValue('thumbUrl');
