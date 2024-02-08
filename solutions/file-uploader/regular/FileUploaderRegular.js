@@ -18,7 +18,6 @@ FileUploaderRegular.template = /* HTML */ `
     <lr-mtn-accept-screen></lr-mtn-accept-screen>
     <lr-cloud-image-editor-activity></lr-cloud-image-editor-activity>
   </lr-modal>
-  <lr-message-box></lr-message-box>
   <lr-progress-bar-common></lr-progress-bar-common>
   <slot></slot>
 `;
