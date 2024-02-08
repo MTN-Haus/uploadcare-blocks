@@ -300,20 +300,29 @@ UploadList.template = /* HTML */ `
         set="onclick: onCancelAlert; @hidden: showCancelAlert"
         l10n="clear"
       ></button>
-      <p class="clear-alert" set="@hidden: !showCancelAlert">Are you sure you want to delete all uploaded pictures?</p>
-      <button
-        type="button"
-        class="cancel-btn secondary-btn"
-        set="onclick: onCancel; @hidden: !showCancelAlert"
-        l10n="clear"
-      ></button>
-      <button
-        type="button"
-        class="cancel-cancel-btn secondary-btn"
-        set="onclick: onCancelClear; @hidden: !showCancelAlert"
-        l10n="cancel"
-      ></button>
+
+      <div class="cancel-submodal" set="@hidden: !showCancelAlert">
+        <div class="overflow" set="onclick: onCancelClear;"></div>
+        <div class="inner">
+          <p class="clear-alert" set="@hidden: !showCancelAlert">
+            Are you sure you want to delete all uploaded pictures?
+          </p>
+          <button
+            type="button"
+            class="cancel-btn secondary-btn"
+            set="onclick: onCancel; @hidden: !showCancelAlert"
+            l10n="clear"
+          ></button>
+          <button
+            type="button"
+            class="cancel-cancel-btn secondary-btn"
+            set="onclick: onCancelClear; @hidden: !showCancelAlert"
+            l10n="cancel"
+          ></button>
+        </div>
+      </div>
     </div>
+
     <div class="files" repeat="*uploadList" repeat-item-tag="lr-file-item"></div>
   </div>
   <div class="toolbar">
