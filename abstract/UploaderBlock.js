@@ -539,14 +539,14 @@ export class UploaderBlock extends ActivityBlock {
           cdnUrlModifiers,
           cdnUrl: createCdnUrl(entry.getValue('cdnUrl'), cdnUrlModifiers),
         });
-        if (
-          this.uploadCollection.size === 1 &&
-          this.cfg.useCloudImageEditor &&
-          this.hasBlockInCtx((block) => block.activityType === ActivityBlock.activities.CLOUD_IMG_EDIT)
-        ) {
-          this.$['*focusedEntry'] = entry;
-          this.$['*currentActivity'] = ActivityBlock.activities.CLOUD_IMG_EDIT;
-        }
+        // if (
+        //   this.uploadCollection.size === 1 &&
+        //   this.cfg.useCloudImageEditor &&
+        //   this.hasBlockInCtx((block) => block.activityType === ActivityBlock.activities.CLOUD_IMG_EDIT)
+        // ) {
+        //   this.$['*focusedEntry'] = entry;
+        //   this.$['*currentActivity'] = ActivityBlock.activities.CLOUD_IMG_EDIT;
+        // }
       }
     }
   }
