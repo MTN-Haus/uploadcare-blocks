@@ -376,4 +376,5 @@ lr-file-item > .inner:where([failed], [limit-overflow]) .badge {
 :host {
   --l10n-files-count-limit-error-min-eq-max: 'You’ve chosen {{total}}. {{min}} pictures are required.';
   --l10n-files-count-limit-error-too-many: 'You’ve chosen too many files. {{max}} are maximum.';
+  --l10n-drop-files-here: 'Add files';
 }
