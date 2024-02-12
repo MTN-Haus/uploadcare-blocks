@@ -357,9 +357,9 @@ export class FileItem extends UploaderBlock {
       return;
     }
     const multipleMax = this.cfg.multiple ? this.cfg.multipleMax : 1;
-    if (multipleMax && this.uploadCollection.size > multipleMax) {
-      return;
-    }
+    // if (multipleMax && this.uploadCollection.size > multipleMax) {
+    //   return;
+    // }
     let data = this.getOutputData((dataItem) => {
       return !dataItem.getValue('fileInfo');
     });

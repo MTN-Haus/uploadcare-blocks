@@ -72,13 +72,14 @@ export class UploadList extends UploaderBlock {
   onAtcBtn() {
     const variantId = window.UploadCareLocalSettings.variant_id;
     const lineItemsJson = window.UploadCareLocalSettings.lineItemsJson;
+    const quantityValue = window.UploadCareLocalSettings.quantity;
 
     let lineItems = lineItemsJson;
 
     let fullData = {
       items: [
         {
-          quantity: 1,
+          quantity: quantityValue || 1,
           id: variantId,
           properties: lineItemsJson,
         },

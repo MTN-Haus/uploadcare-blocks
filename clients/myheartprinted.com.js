@@ -27,6 +27,7 @@ class MTNUploadCare {
     if (this.config.variant_id != 0) {
       this.uploader = document.querySelector(`.${attrs.uploader}`);
       this.form = this.uploader.closest('form[action="/cart/add"]');
+      this.quantityEl = this.uploader.closest('product-info').querySelector('.quantity__input');
 
       this.btnsContainer;
 
@@ -36,6 +37,7 @@ class MTNUploadCare {
         atcBtns: 'enabled',
       };
 
+      this.quantityWatcher();
       this.checkDefault();
       this.addUploader();
       this.productFormWatcher();
@@ -75,7 +77,7 @@ class MTNUploadCare {
         <p class="accept-message__icon accept-message__icon--2">Area beyond the dotted lines will wrap around the edges of your magnets</p>
         <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
       `,
-      providers: 'local, instagram', // url, camera, dropbox, facebook, gdrive, gphotos, instagram
+      providers: 'local, instagram, gphotos, instagram', // url, camera, dropbox, facebook, gdrive, gphotos, instagram
     };
 
     Object.keys(def).forEach((key) => {
@@ -101,7 +103,6 @@ class MTNUploadCare {
             cropPreset="${this.config.crop_preset}"
             thumbSize="${this.config.thumb_size}"
             removeCopyright="true"
-            debug="true"
             confirmUpload="false"
             source-list="${this.config.providers}"
           ></lr-config>
@@ -121,6 +122,12 @@ class MTNUploadCare {
         </div>
       </div>
     `;
+  }
+
+  quantityWatcher() {
+    this.quantityEl.addEventListener('change', () => {
+      window.UploadCareLocalSettings.quantity = this.quantityEl.value;
+    });
   }
 
   onUpload() {
