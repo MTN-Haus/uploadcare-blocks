@@ -26,6 +26,7 @@ export class UploadList extends UploaderBlock {
 
       headerText: 'Product Preview',
       errorText: '',
+      validationErrorMsg: null,
       addMoreCount: 0,
       addMoreCountVisible: false,
       acceptMessage: window.UploadCareLocalSettings.accept_message,
@@ -182,8 +183,18 @@ export class UploadList extends UploaderBlock {
       failed: 0,
       limitOverflow: 0,
     };
+    this.set$({
+      validationErrorMsg: null,
+    });
     for (let id of itemIds) {
       let item = this.uploadCollection.read(id);
+      if (item.getValue('validationErrorMsg')) {
+        this.set$({
+          validationErrorMsg: this.validationErrorMsg
+            ? this.validationErrorMsg + `${item.getValue('validationErrorMsg')}\n`
+            : `${item.getValue('validationErrorMsg')}\n`,
+        });
+      }
       if (item.getValue('fileInfo') && !item.getValue('validationErrorMsg')) {
         summary.succeed += 1;
       }
@@ -282,7 +293,10 @@ UploadList.template = /* HTML */ `
   <div class="accept-block">
     <div class="accept-block__text">
       <div set="innerHTML: acceptMessage;" class="accept-block__message"></div>
-      <div class="accept-block__error" set="@hidden: !errorText">{{errorText}}</div>
+      <div class="accept-block__error" set="@hidden: !errorText">
+        <div set="@hidden: validationErrorMsg">{{errorText}}</div>
+      </div>
+      <div class="accept-block__error" set="@hidden: !validationErrorMsg">{{validationErrorMsg}}</div>
     </div>
     <div class="accept-block__btns">
       <button set="onclick: onAtc; @disabled: !atcBtnEnabled" class="atc-button primary-btn">Add to cart</button>

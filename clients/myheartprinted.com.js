@@ -125,9 +125,11 @@ class MTNUploadCare {
   }
 
   quantityWatcher() {
-    this.quantityEl.addEventListener('change', () => {
-      window.UploadCareLocalSettings.quantity = this.quantityEl.value;
-    });
+    if (this.quantityEl) {
+      this.quantityEl.addEventListener('change', () => {
+        window.UploadCareLocalSettings.quantity = this.quantityEl.value;
+      });
+    }
   }
 
   onUpload() {

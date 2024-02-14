@@ -363,6 +363,7 @@ export class UploaderBlock extends ActivityBlock {
   _validateIsImage(entry) {
     const imagesOnly = this.cfg.imgOnly;
     const isImage = entry.getValue('isImage');
+
     if (!imagesOnly || isImage) {
       return;
     }
