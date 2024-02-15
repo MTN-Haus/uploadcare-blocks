@@ -293,9 +293,7 @@ UploadList.template = /* HTML */ `
   <div class="accept-block">
     <div class="accept-block__text">
       <div set="innerHTML: acceptMessage;" class="accept-block__message"></div>
-      <div class="accept-block__error" set="@hidden: !errorText">
-        <div set="@hidden: validationErrorMsg">{{errorText}}</div>
-      </div>
+      <div class="accept-block__error" set="@hidden: !errorText">{{errorText}}</div>
       <div class="accept-block__error" set="@hidden: !validationErrorMsg">{{validationErrorMsg}}</div>
     </div>
     <div class="accept-block__btns">
