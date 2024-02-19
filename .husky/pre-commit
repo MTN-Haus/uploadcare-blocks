@@ -3,3 +3,5 @@
 
 ./node_modules/.bin/lint-staged
 npm run tsc
+
+./node_modules/.bin/javascript-obfuscator ./web
