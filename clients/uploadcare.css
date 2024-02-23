@@ -83,6 +83,7 @@
   right: calc(2 / 57 * 100%);
   box-shadow: 0 0 80px #000;
   z-index: 1;
+  border-radius: var(--image-shape-radius);
 }
 
 lr-start-from {
@@ -273,6 +274,10 @@ lr-file-item > .inner:where([failed], [limit-overflow]) .badge {
   text-align: center;
   padding: 0 20px;
   z-index: 300;
+}
+
+.uploadcare-cart-previews.shape-circle img {
+  border-radius: 50%;
 }
 
 @media screen and (min-width: 750px) {

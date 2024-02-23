@@ -68,6 +68,7 @@ class MTNUploadCare {
       btn_border: '1px solid #000',
       btn_hover_border: '1px solid #000',
       btn_border_radius: '0px',
+      image_shape: 'square',
       upload_images_messsage: 'Please, upload images first',
       thumb_size: 800,
       atc_btns_selectors: '', // will be disabled
@@ -224,6 +225,9 @@ class MTNUploadCare {
 
     previewBoxes.forEach((previewBox) => {
       let markup = '';
+
+      previewBox.classList.add('shape-' + this.config.image_shape);
+
       const imageUrls = JSON.parse(previewBox.dataset.galPreviews);
       imageUrls.forEach((imageUrl, i) => {
         markup += `<img src='${imageUrl}' alt='Preview image #${i + 1}' />`;
@@ -233,6 +237,8 @@ class MTNUploadCare {
   }
 
   initUploadCare() {
+    const imageShapeRadius = this.config.image_shape == 'circle' ? '50%' : '0';
+
     LR.FileUploaderRegular.shadowStyles = `
       :where(.lr-wgt-theme,.lr-wgt-common), :host {
         --darkmode: 0;
@@ -241,7 +247,7 @@ class MTNUploadCare {
         --h-accent: ${hexToHSL(this.config.accent_color).h} !important;
         --s-accent: ${hexToHSL(this.config.accent_color).s}% !important;
         --l-accent: ${hexToHSL(this.config.accent_color).l}% !important;
-
+        --image-shape-radius: ${imageShapeRadius};
         --accept-message: "${JSON.stringify(this.config.accept_message)}";
       }
 
