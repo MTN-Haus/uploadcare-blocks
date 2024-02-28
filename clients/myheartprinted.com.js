@@ -23,30 +23,47 @@ class MTNUploadCare {
     this.body = document.body;
 
     this.config = { ...window.UploadCareLocalSettings };
+    this.checkDefault();
 
     if (this.config.variant_id != 0) {
+      this.quantityWatcher();
+      this.addUploaderBox();
+
       this.uploader = document.querySelector(`.${attrs.uploader}`);
       this.form = this.uploader.closest('form[action="/cart/add"]');
       this.quantityEl = this.uploader.closest('product-info').querySelector('.quantity__input');
-
       this.btnsContainer;
-
       this.imageBoxCarts = document.querySelectorAll(`.${attrs.imageBoxCart}`);
 
       this.state = {
         atcBtns: 'enabled',
       };
-
-      this.quantityWatcher();
-      this.checkDefault();
       this.addUploader();
-      this.productFormWatcher();
+
+      this.hideAtcBtns();
       this.onUpload();
-      // this.messageWatcher();
       this.initUploadCare();
     }
 
+    this.productFormWatcher();
     this.updateCartPreviews();
+  }
+
+  watchCartDrawer() {
+    const config = {
+      subtree: true,
+    };
+
+    const cartDrawerBox = document.querySelector(this.config.cart_items_selector);
+
+    const callback = (mutationList) => {
+      for (const mutation of mutationList) {
+        this.updateCartPreviews();
+      }
+    };
+
+    const observer = new MutationObserver(callback);
+    observer.observe(cartDrawerBox, config);
   }
 
   checkDefault() {
@@ -71,6 +88,7 @@ class MTNUploadCare {
       image_shape: 'square',
       upload_images_messsage: 'Please, upload images first',
       thumb_size: 800,
+      cart_items_selector: '.cart-items',
       atc_btns_selectors: '', // will be disabled
       variant_id: 0,
       accept_message: `
@@ -86,6 +104,20 @@ class MTNUploadCare {
     });
 
     window.UploadCareLocalSettings = { ...this.config };
+  }
+
+  addUploaderBox() {
+    const atcBtnsBox = document.querySelector(this.config.atc_form_btns_selector);
+    const uploaderBox = document.createElement('div');
+    uploaderBox.classList.add('pdp-uploadcare-uploader');
+
+    atcBtnsBox.parentElement.insertBefore(uploaderBox, atcBtnsBox);
+  }
+
+  hideAtcBtns() {
+    if (this.config.hide_atc_form_btns && document.querySelector(this.config.atc_form_btns_selector)) {
+      document.querySelector(this.config.atc_form_btns_selector).style.display = 'none';
+    }
   }
 
   addUploader() {
@@ -105,6 +137,7 @@ class MTNUploadCare {
             thumbSize="${this.config.thumb_size}"
             removeCopyright="true"
             confirmUpload="false"
+            debug="true"
             source-list="${this.config.providers}"
           ></lr-config>
 
@@ -182,22 +215,6 @@ class MTNUploadCare {
     });
   }
 
-  // messageWatcher() {
-  //   this.btnsContainer = this.form.querySelector(this.config.atc_form_btns_selector);
-  //   if (this.btnsContainer) {
-  //     this.btnsContainer.addEventListener('mouseover', () => {
-  //       if(!this.btnsContainer.querySelector('.mtn-uploadcare-message') && this.state.atcBtns == 'disabled') {
-  //         let message = document.createElement('div');
-  //         message.classList.add('mtn-uploadcare-message');
-  //         message.textContent = this.config.upload_images_messsage;
-  //         this.btnsContainer.append(message);
-  //       } else if( this.state.atcBtns == 'enabled') {
-  //         this.btnsContainer.querySelector('.mtn-uploadcare-message')?.remove();
-  //       }
-  //     });
-  //   }
-  // }
-
   toggleATCBtns(show, form) {
     if (this.config.hide_atc_form_btns) {
       form.querySelectorAll(this.config.atc_btns_selectors).forEach((btn) => {
@@ -225,8 +242,6 @@ class MTNUploadCare {
 
     previewBoxes.forEach((previewBox) => {
       let markup = '';
-
-      previewBox.classList.add('shape-' + this.config.image_shape);
 
       const imageUrls = JSON.parse(previewBox.dataset.galPreviews);
       imageUrls.forEach((imageUrl, i) => {

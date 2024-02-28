@@ -276,7 +276,7 @@ lr-file-item > .inner:where([failed], [limit-overflow]) .badge {
   z-index: 300;
 }
 
-.uploadcare-cart-previews.shape-circle img {
+.uploadcare-cart-previews[data-shape='circle'] img {
   border-radius: 50%;
 }
 
