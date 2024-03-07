@@ -8,7 +8,14 @@
 // {% endcomment %}
 
 // import * as LR from '{{ "blocks.min.js" | asset_url }}';
-import * as LR from './../web/blocks.min.js';
+import * as LR from './../web/blocks-obfuscated.min.js';
+
+const current_file_url = import.meta.url;
+let dir_path = import.meta.url.substring(0, import.meta.url.lastIndexOf('/'));
+dir_path = dir_path.substring(0, dir_path.lastIndexOf('/') + 1);
+const BLOCKS_URL = dir_path;
+
+const CLIENT_NAME = import.meta.url.substring(import.meta.url.lastIndexOf('/') + 1).slice(0, -3);
 
 document.addEventListener('DOMContentLoaded', () => {
   const upload = new MTNUploadCare({
@@ -26,6 +33,8 @@ class MTNUploadCare {
     this.checkDefault();
 
     if (this.config.variant_id != 0) {
+      this.addCss();
+
       this.quantityWatcher();
       this.addUploaderBox();
 
@@ -47,6 +56,13 @@ class MTNUploadCare {
 
     this.productFormWatcher();
     this.updateCartPreviews();
+  }
+
+  addCss() {
+    let styleSheet = document.createElement('style');
+    styleSheet.href = BLOCKS_URL + window.location.hostname + '.css';
+    styleSheet.dataset.module = 'upload-blocks';
+    document.head.appendChild(styleSheet);
   }
 
   watchCartDrawer() {
@@ -143,7 +159,7 @@ class MTNUploadCare {
 
           <lr-file-uploader-regular
             ctx-name="${this.config.ctx_name}"
-            css-src="http://127.0.0.1:5500/vite/blocks/clients/uploadcare.css"
+            css-src="${BLOCKS_URL + 'clients/' + CLIENT_NAME + '.css'}"
             >
           </lr-file-uploader-regular>
           
