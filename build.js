@@ -33,7 +33,7 @@ function build(buildItem) {
       minify: buildItem.minify,
       sourcemap: false,
       outfile: buildItem.out,
-      target: 'es2019',
+      target: 'es2020',
       banner: {
         js: jsBanner(),
       },

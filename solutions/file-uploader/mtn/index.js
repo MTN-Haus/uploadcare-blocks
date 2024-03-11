@@ -7,15 +7,11 @@
 //   window.dispatchEvent(new Event('uploadcare:cart-update'));
 // {% endcomment %}
 
-// import * as LR from '{{ "blocks.min.js" | asset_url }}';
-import * as LR from './../web/blocks-obfuscated.min.js';
+import * as LR from '../../../index.js';
 
-const current_file_url = import.meta.url;
-let dir_path = import.meta.url.substring(0, import.meta.url.lastIndexOf('/'));
-dir_path = dir_path.substring(0, dir_path.lastIndexOf('/') + 1);
-const BLOCKS_URL = dir_path;
-
-const CLIENT_NAME = import.meta.url.substring(import.meta.url.lastIndexOf('/') + 1).slice(0, -3);
+const URL = import.meta.url;
+const PATH = URL.substring(0, URL.lastIndexOf('/'));
+const CSS_PATH = URL.substring(0, URL.lastIndexOf('/')) + '/lr-file-uploader-mtn.min.css';
 
 document.addEventListener('DOMContentLoaded', () => {
   const upload = new MTNUploadCare({
@@ -32,9 +28,8 @@ class MTNUploadCare {
     this.config = { ...window.UploadCareLocalSettings };
     this.checkDefault();
 
-    if (this.config.variant_id != 0) {
-      this.addCss();
-
+    this.addCss();
+    if (this.config.variant_id !== 0) {
       this.quantityWatcher();
       this.addUploaderBox();
 
@@ -59,10 +54,7 @@ class MTNUploadCare {
   }
 
   addCss() {
-    let styleSheet = document.createElement('style');
-    styleSheet.href = BLOCKS_URL + window.location.hostname + '.css';
-    styleSheet.dataset.module = 'upload-blocks';
-    document.head.appendChild(styleSheet);
+    document.head.insertAdjacentHTML('beforeend', `<link typs="text/css" rel="stylesheet" href="${CSS_PATH}">`);
   }
 
   watchCartDrawer() {
@@ -159,7 +151,7 @@ class MTNUploadCare {
 
           <lr-file-uploader-regular
             ctx-name="${this.config.ctx_name}"
-            css-src="${BLOCKS_URL + 'clients/' + CLIENT_NAME + '.css'}"
+            css-src="${CSS_PATH}"
             >
           </lr-file-uploader-regular>
           
@@ -349,3 +341,5 @@ function hexToHSL(H) {
 
   return { h, s, l };
 }
+
+export * from '../../../index.js';

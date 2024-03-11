@@ -49,6 +49,19 @@ export const buildItems = [
     minify: true,
   },
 
+  // file-uploader-mtn
+  {
+    in: './solutions/file-uploader/mtn/index.js',
+    out: './web/lr-file-uploader-mtn.min.js',
+    minify: true,
+    minifyHtml: true,
+  },
+  {
+    in: './solutions/file-uploader/mtn/index.css',
+    out: './web/lr-file-uploader-mtn.min.css',
+    minify: true,
+  },
+
   // file-uploader-inline
   {
     in: './solutions/file-uploader/inline/index.js',

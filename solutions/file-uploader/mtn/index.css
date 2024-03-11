@@ -1,4 +1,6 @@
-@import url('https://cdn.jsdelivr.net/npm/@uploadcare/blocks/web/lr-file-uploader-regular.min.css');
+/* stylelint-disable */
+
+@import url('../../../blocks/themes/lr-basic/index.css');
 
 /* theme reset */
 .uploadcare-wrapper a:empty,
@@ -383,3 +385,5 @@ lr-file-item > .inner:where([failed], [limit-overflow]) .badge {
   --l10n-files-count-limit-error-too-many: 'You’ve chosen too many files. {{max}} are maximum.';
   --l10n-drop-files-here: 'Add files';
 }
+
+/* stylelint-enable */
