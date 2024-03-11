@@ -386,4 +386,8 @@ lr-file-item > .inner:where([failed], [limit-overflow]) .badge {
   --l10n-drop-files-here: 'Add files';
 }
 
+.uploadcare-cart-previews {
+  --preview-image-display: grid !important;
+}
+
 /* stylelint-enable */

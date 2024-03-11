@@ -28,7 +28,6 @@ class MTNUploadCare {
     this.config = { ...window.UploadCareLocalSettings };
     this.checkDefault();
 
-    this.addCss();
     if (this.config.variant_id !== 0) {
       this.quantityWatcher();
       this.addUploaderBox();
@@ -53,7 +52,7 @@ class MTNUploadCare {
     this.updateCartPreviews();
   }
 
-  addCss() {
+  addCartCss() {
     document.head.insertAdjacentHTML('beforeend', `<link typs="text/css" rel="stylesheet" href="${CSS_PATH}">`);
   }
 
@@ -246,14 +245,19 @@ class MTNUploadCare {
   }
 
   updateCartPreviews() {
+    this.addCartCss();
+
     const previewBoxes = document.querySelectorAll('.uploadcare-cart-previews');
 
     previewBoxes.forEach((previewBox) => {
+      previewBox.style.setProperty('--preview-image-display', 'none');
       let markup = '';
 
       const imageUrls = JSON.parse(previewBox.dataset.galPreviews);
       imageUrls.forEach((imageUrl, i) => {
-        markup += `<img src='${imageUrl}' alt='Preview image #${i + 1}' />`;
+        markup += `<img src='${imageUrl}' style="display: var(--preview-image-display);" loading="lazy" alt='Preview image #${
+          i + 1
+        }' />`;
       });
       previewBox.innerHTML = markup;
     });
