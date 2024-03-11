@@ -11,7 +11,7 @@ import * as LR from '../../../index.js';
 
 const URL = import.meta.url;
 // const PATH = URL.substring(0, URL.lastIndexOf('/'));
-const CSS_PATH = PATH + '/lr-file-uploader-mtn.min.css';
+const CSS_PATH = URL + '/lr-file-uploader-mtn.min.css';
 
 document.addEventListener('DOMContentLoaded', () => {
   const upload = new MTNUploadCare({
